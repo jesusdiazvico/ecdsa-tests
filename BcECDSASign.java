@@ -61,7 +61,6 @@ class BcECDSASign {
 	   curve order/2, we compute the additive inverse of s modulo the
 	   curve order, if that's the case) */	
 	BigInteger rs;
-	BigInteger s;
 	if (sig[1].compareTo(spec.getN().shiftRight(1)) >= 0) {
 	    rs = spec.getN().subtract(sig[1]).mod(spec.getN());
 	} else {
