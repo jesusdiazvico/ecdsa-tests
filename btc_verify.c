@@ -27,9 +27,7 @@ int main(int argc, char *argv[]) {
   memset(mh, 0, 32);
   cpk = NULL;
   ssig = NULL;
-  
-  fprintf(stdout, "Verifying message: %s\n", argv[1]);
-  
+    
   ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
   if (!fill_random(randomize, sizeof(randomize))) {
     return 2;
@@ -53,6 +51,7 @@ int main(int argc, char *argv[]) {
     return 6;
   }
 
+  fprintf(stdout, "Verifying message: %s\n", argv[1]);    
   if(secp256k1_ecdsa_verify(ctx, &sig, mh, &pk)) fprintf(stdout, "VALID sig\n");
   else fprintf(stdout, "WRONG sig\n"); 
 

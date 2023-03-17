@@ -11,8 +11,6 @@ import java.security.interfaces.ECPublicKey;
 import java.util.Base64;
 import java.security.MessageDigest;
 
-
-
 class BcECDSAVerify {
     
     public static void main(String[] args) throws Exception {
@@ -46,8 +44,11 @@ class BcECDSAVerify {
         Signature verifier = Signature.getInstance("SHA256withECDSA", provider);
         verifier.initVerify(pk);
         verifier.update(messageBytes);
-        Boolean result = verifier.verify(sigB);
-        System.out.println("Verifying libsecp256k1 signature: " + (result ? "True" : "False"));
+
+	Boolean result = verifier.verify(sigB);
+	System.out.println("Verifying message: "+args[0]);
+	if (result) System.out.println("VALID sig");
+	else System.out.println("WRONG sig");
     }
     
 }

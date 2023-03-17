@@ -28,9 +28,7 @@ int main(int argc, char *argv[]) {
   memset(sk, 0, 32);
   memset(cpk, 0, 33);
   memset(ssig, 0, 74);
-  
-  fprintf(stdout, "Signing message: %s\n", argv[1]);
-  
+    
   ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
   if (!fill_random(randomize, sizeof(randomize))) {
     return 2;
@@ -79,6 +77,7 @@ int main(int argc, char *argv[]) {
     return 11;
   }
 
+  fprintf(stdout, "Signing message: %s\n", argv[1]);
   fprintf(stdout, "Sig: %s\n", hsig);
   fprintf(stdout, "PK: %s\n", hcpk);
   

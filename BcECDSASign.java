@@ -52,9 +52,10 @@ class BcECDSASign {
         byte[] hashBytes = digest.digest(messageBytes);
         signer.update(messageBytes);
         byte[] signature = signer.sign();
-    
-	System.out.println("PK: "+Hex.toHexString(Q.getEncoded(true)));
+
+	System.out.println("Signing message: "+args[0]);
 	System.out.println("Sig: "+Hex.toHexString(signature));
+	System.out.println("PK: "+Hex.toHexString(Q.getEncoded(true)));
 
     }
     
