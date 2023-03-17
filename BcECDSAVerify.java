@@ -1,14 +1,14 @@
-import org.bouncycastle.jce.interfaces.ECPrivateKey;
-import org.bouncycastle.jce.spec.*;
+import org.bouncycastle.jce.spec.ECPublicKeySpec;
+import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.encoders.Hex;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
+import java.security.Security;
+import java.security.Signature;
+import java.security.KeyFactory;
 import java.security.interfaces.ECPublicKey;
-import java.util.Base64;
 import java.security.MessageDigest;
 
 class BcECDSAVerify {
@@ -20,14 +20,15 @@ class BcECDSAVerify {
 	    System.exit(0);
 	}
 
+	/* Load BC provider */
         BouncyCastleProvider provider = new BouncyCastleProvider();
         Security.addProvider(provider);	
 
-	/* Import pk */
+	/* Import public key from command line arg */
 	String pkHex = args[2];
 	byte[] pkB = Hex.decode(pkHex);
 
-	/* Import sig */
+	/* Import DER-encoded sig sig */
 	String sigHex = args[1];
         byte[] sigB = Hex.decode(sigHex);
 	
@@ -38,6 +39,7 @@ class BcECDSAVerify {
         ECPublicKeySpec pubSpec = new ECPublicKeySpec(curvePoints, params);
         ECPublicKey pk = (ECPublicKey) factory.generatePublic(pubSpec);
 
+	/* Get message to verify from command line */
         byte[] messageBytes = args[0].getBytes(StandardCharsets.UTF_8);
 	
 	/* Verify */

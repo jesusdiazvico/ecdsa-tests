@@ -1,8 +1,3 @@
-/*
- *
- *
- *
- */
 #include <stdio.h>
 #include <string.h>
 #include <openssl/sha.h>
@@ -29,32 +24,24 @@ int main(int argc, char *argv[]) {
   ssig = NULL;
     
   ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
-  if (!fill_random(randomize, sizeof(randomize))) {
-    return 2;
-  }
-
-  if (!secp256k1_context_randomize(ctx, randomize)) {
-    return 3;
-  }
-
-  if (!SHA256(argv[1], strlen(argv[1]), mh)) {
-    return 4;
-  }
+  if (!fill_random(randomize, sizeof(randomize))) return 2;
+  if (!secp256k1_context_randomize(ctx, randomize)) return 3;
+  if (!SHA256(argv[1], strlen(argv[1]), mh)) return 4;
 
   len = hex2bin(argv[2], &ssig);
-  if (!secp256k1_ecdsa_signature_parse_der(ctx, &sig, ssig, len)) {
-    return 5;
-  }
+  if (!secp256k1_ecdsa_signature_parse_der(ctx, &sig, ssig, len)) return 5;
 
   len = hex2bin(argv[3], &cpk);
-  if (!secp256k1_ec_pubkey_parse(ctx, &pk, cpk, 33)) {
-    return 6;
-  }
+  if (!secp256k1_ec_pubkey_parse(ctx, &pk, cpk, 33)) return 6;
 
   fprintf(stdout, "Verifying message: %s\n", argv[1]);    
   if(secp256k1_ecdsa_verify(ctx, &sig, mh, &pk)) fprintf(stdout, "VALID sig\n");
-  else fprintf(stdout, "WRONG sig\n"); 
-
+  else fprintf(stdout, "WRONG sig\n");
+  
+  secp256k1_context_destroy(ctx);
+  free(ssig); ssig = NULL;
+  free(cpk); cpk = NULL;
+      
   return 0;
   
 }
